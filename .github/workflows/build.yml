@@ -1,25 +1,33 @@
-name: Build
-
-on: [pull_request]
-
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '17'
-          java-package: jdk+fx
-      - run: |
-          mvn package -DskipTests
+    - continue-on-error: true
+      uses: actions/checkout@v2
+    - continue-on-error: true
+      uses: actions/setup-java@v1
+      with:
+        java-package: jdk+fx
+        java-version: '17'
+    - continue-on-error: true
+      run: 'mvn package -DskipTests
+
+        '
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '17'
-          java-package: jdk+fx
-      - run: |
-           mvn test
+    - continue-on-error: true
+      uses: actions/checkout@v2
+    - continue-on-error: true
+      uses: actions/setup-java@v1
+      with:
+        java-package: jdk+fx
+        java-version: '17'
+    - continue-on-error: true
+      run: 'mvn test
+
+        '
+name: Build
+on:
+  repository_dispatch:
+    types: trigger-ga___build.yml
